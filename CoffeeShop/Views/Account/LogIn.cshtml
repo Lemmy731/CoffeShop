@@ -1,0 +1,83 @@
+﻿@using CoffeeShop.DataDTO
+@model LoginDTO
+
+@{
+    ViewData["Title"] = "Log in to your account";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h4>Log in to your account</h4>
+        </p>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="col-md-12 alert alert-danger">
+                <span><b>Sorry!</b> - @TempData["Error"] </span>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form method="post" asp-action="LogIn">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+
+                        @if (!string.IsNullOrEmpty(Context.Request.Query["ReturnUrl"]))
+                        {
+                            <input type="hidden" name="returnUrl" value="@Context.Request.Query["ReturnUrl"]" />
+                        }
+                        else
+                        {
+                            <input type="hidden" name="returnUrl" value="direct login" />
+                        }
+
+                   <input class="btn btn-outline-success float-right" type="submit" value="Log in" />
+                        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function getCookieValue(name) {
+        document.cookie = "Name=Oeschger; SameSite=strict; Secure";
+        const output = document.getElementById("cookies");
+
+        var cookies = document.cookie.trim().split("; ");
+        console.log("Full Cookie String:", cookies);
+        for (var i = 0; i < cookies.length; i++) {
+            var parts = cookies[i].split("=");
+            if (parts[0] === name) {
+                return parts[1];
+            }
+        }
+        return "";
+    }
+
+</script>
+
